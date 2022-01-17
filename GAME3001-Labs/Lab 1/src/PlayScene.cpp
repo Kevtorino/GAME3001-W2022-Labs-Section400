@@ -37,7 +37,7 @@ void PlayScene::handleEvents()
 	EventManager::Instance().update();
 
 	// handle player movement with GameController
-	if (SDL_NumJoysticks() > 0)
+	/*if (SDL_NumJoysticks() > 0)
 	{
 		if (EventManager::Instance().getGameController(0) != nullptr)
 		{
@@ -64,22 +64,27 @@ void PlayScene::handleEvents()
 				}
 			}
 		}
-	}
+	}*/
 
 
 	// handle player movement if no Game Controllers found
-	if (SDL_NumJoysticks() < 1)
+	/*if (SDL_NumJoysticks() < 1)*/
 	{
 		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_A))
 		{
 			m_pPlayer->setAnimationState(PLAYER_RUN_LEFT);
 			m_playerFacingRight = false;
+			const auto current_position = m_pPlayer->getTransform()->position;
+			m_pPlayer->getTransform()->position = current_position + glm::vec2(-5.0f, 0.0f);
 		}
 		else if (EventManager::Instance().isKeyDown(SDL_SCANCODE_D))
 		{
 			m_pPlayer->setAnimationState(PLAYER_RUN_RIGHT);
 			m_playerFacingRight = true;
+			const auto current_position = m_pPlayer->getTransform()->position;
+			m_pPlayer->getTransform()->position = current_position + glm::vec2(5.0f, 0.0f);
 		}
+	
 		else
 		{
 			if (m_playerFacingRight)
@@ -92,7 +97,16 @@ void PlayScene::handleEvents()
 			}
 		}
 	}
-	
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_W))
+	{
+		const auto current_position = m_pPlayer->getTransform()->position;
+		m_pPlayer->getTransform()->position = current_position + glm::vec2(0.0f, -5.0f);
+	}
+	else if (EventManager::Instance().isKeyDown(SDL_SCANCODE_S))
+	{
+		const auto current_position = m_pPlayer->getTransform()->position;
+		m_pPlayer->getTransform()->position = current_position + glm::vec2(0.0f, 5.0f);
+	}
 
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_ESCAPE))
 	{
